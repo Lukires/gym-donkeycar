@@ -14,6 +14,7 @@ from collections import deque
 
 import cv2
 import gym
+import gym_donkeycar
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras import backend as K
@@ -197,10 +198,10 @@ def run_ddqn(args):
     """
 
     # only needed if TF==1.13.1
-    config = tf.ConfigProto()
+    config = tf.compat.v1.ConfigProto()
     config.gpu_options.allow_growth = True
-    sess = tf.Session(config=config)
-    K.set_session(sess)
+    sess = tf.compat.v1.Session(config=config)
+    tf.compat.v1.keras.backend.set_session(sess)
 
     conf = {
         "exe_path": args.sim,
