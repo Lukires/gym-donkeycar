@@ -14,7 +14,7 @@ Download simulator binaries: https://github.com/tawnkramer/gym-donkeycar/release
 Install master version of gym donkey car:
 
 ```shell
-pip install git+https://github.com/tawnkramer/gym-donkeycar
+pip install git+https://github.com/Lukires/gym-donkeycar
 ```
 
 ## Example Usage
