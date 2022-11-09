@@ -11,7 +11,7 @@ import signal
 import sys
 import uuid
 from collections import deque
-
+import uuid
 import cv2
 import gym
 import gym_donkeycar
@@ -97,6 +97,8 @@ class DQNAgent:
         return np.dot(rgb[..., :3], [0.299, 0.587, 0.114])
 
     def process_image(self, obs):
+        # Commented out image creation for testing
+        cv2.imwrite('./images/'+str(uuid.uuid1())+".jpg", obs)
         obs = self.rgb2gray(obs)
         obs = cv2.resize(obs, (img_rows, img_cols))
         return obs
@@ -342,6 +344,7 @@ if __name__ == "__main__":
         "donkey-warren-track-v0",
         "donkey-thunderhill-track-v0",
         "donkey-circuit-launch-track-v0",
+        "donkey-delta-v0"
     ]
 
     parser = argparse.ArgumentParser(description="ddqn")
@@ -356,7 +359,7 @@ if __name__ == "__main__":
     parser.add_argument("--port", type=int, default=9091, help="port to use for websockets")
     parser.add_argument("--throttle", type=float, default=0.3, help="constant throttle for driving")
     parser.add_argument(
-        "--env_name", type=str, default="donkey-warehouse-v0", help="name of donkey sim environment", choices=env_list
+        "--env_name", type=str, default="donkey-delta-v0", help="name of donkey sim environment", choices=env_list
     )
 
     args = parser.parse_args()
