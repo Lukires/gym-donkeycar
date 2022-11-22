@@ -9,12 +9,12 @@ Donkey Car OpenAI Gym
 
 ## Installation
 
-Download simulator binaries: https://github.com/tawnkramer/gym-donkeycar/releases
+Download simulator binaries: https://github.com/Lukires/sdsandbox/releases
 
 Install master version of gym donkey car:
 
 ```shell
-pip install git+https://github.com/tawnkramer/gym-donkeycar
+pip install git+https://github.com/Lukires/gym-donkeycar
 ```
 
 ## Example Usage
