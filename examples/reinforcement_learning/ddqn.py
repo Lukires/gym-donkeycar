@@ -98,7 +98,7 @@ class DQNAgent:
 
     def process_image(self, obs):
         # Commented out image creation for testing
-        cv2.imwrite('./images/'+str(uuid.uuid1())+".jpg", obs)
+        #cv2.imwrite('./images/'+str(uuid.uuid1())+".jpg", obs)
         obs = self.rgb2gray(obs)
         obs = cv2.resize(obs, (img_rows, img_cols))
         return obs
@@ -217,7 +217,7 @@ def run_ddqn(args):
         "country": "USA",
         "bio": "Learning to drive w DDQN RL",
         "guid": str(uuid.uuid4()),
-        "max_cte": 10,
+        "max_cte": 30,
     }
 
     # Construct gym environment. Starts the simulator if path is given.

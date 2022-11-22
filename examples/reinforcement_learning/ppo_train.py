@@ -7,7 +7,7 @@ https://github.com/hill-a/stable-baselines
 """
 import argparse
 import uuid
-
+import gym_donkeycar
 import gym
 from stable_baselines3 import PPO
 
@@ -26,6 +26,7 @@ if __name__ == "__main__":
         "donkey-warren-track-v0",
         "donkey-thunderhill-track-v0",
         "donkey-circuit-launch-track-v0",
+        "donkey-delta-v0"
     ]
 
     parser = argparse.ArgumentParser(description="ppo_train")
@@ -39,7 +40,7 @@ if __name__ == "__main__":
     parser.add_argument("--test", action="store_true", help="load the trained model and play")
     parser.add_argument("--multi", action="store_true", help="start multiple sims at once")
     parser.add_argument(
-        "--env_name", type=str, default="donkey-warehouse-v0", help="name of donkey sim environment", choices=env_list
+        "--env_name", type=str, default="donkey-delta-v0", help="name of donkey sim environment", choices=env_list
     )
 
     args = parser.parse_args()
@@ -62,7 +63,7 @@ if __name__ == "__main__":
         "country": "USA",
         "bio": "Learning to drive w PPO RL",
         "guid": str(uuid.uuid4()),
-        "max_cte": 10,
+        "max_cte": 40,
     }
 
     if args.test:
@@ -95,7 +96,7 @@ if __name__ == "__main__":
 
         obs = env.reset()
 
-        for i in range(1000):
+        for i in range(10000):
 
             action, _states = model.predict(obs, deterministic=True)
 
