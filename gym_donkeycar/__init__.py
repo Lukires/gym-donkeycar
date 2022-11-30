@@ -15,7 +15,7 @@ from gym_donkeycar.envs.donkey_env import (
     WarehouseEnv,
     WarrenTrackEnv,
     WaveshareEnv,
-    DonkeyEnv,
+    DeltaEnv,
 )
 
 # Read version from file

@@ -92,6 +92,7 @@ class DonkeyUnitySimHandler(IMesgHandler):
         self.loaded = False
         self.max_cte = conf["max_cte"]
         self.timer = FPSTimer()
+        self.last_reset = time.time()
 
         # sensor size - height, width, depth
         self.camera_img_size = conf["cam_resolution"]
@@ -360,6 +361,7 @@ class DonkeyUnitySimHandler(IMesgHandler):
         self.send_reset_car()
         self.timer.reset()
         time.sleep(1)
+        self.last_reset = time.time()
         self.image_array = np.zeros(self.camera_img_size)
         self.image_array_b = None
         self.last_obs = self.image_array
@@ -555,18 +557,18 @@ class DonkeyUnitySimHandler(IMesgHandler):
         # the path just slightly. We ignore those.
         if math.fabs(self.cte) > 2 * self.max_cte:
             pass
-        elif math.fabs(self.cte) > self.max_cte:
-            logger.debug(f"game over: cte {self.cte}")
-            self.over = True
+        #elif math.fabs(self.cte) > self.max_cte:
+        #    logger.debug(f"game over: cte {self.cte}")
+        #    self.over = True
         elif self.hit != "none":
             logger.debug(f"game over: hit {self.hit}")
             self.over = True
-        elif self.missed_checkpoint:
-            logger.debug("missed checkpoint")
-            self.over = True
-        elif self.dq:
-            logger.debug("disqualified")
-            self.over = True
+        #elif self.missed_checkpoint:
+        #    logger.debug("missed checkpoint")
+        #    self.over = True
+        #elif self.dq:
+        #    logger.debug("disqualified")
+        #    self.over = True
 
         # Disable reset
         if os.environ.get("RACE") == "True":
