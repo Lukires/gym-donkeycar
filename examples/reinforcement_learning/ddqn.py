@@ -23,7 +23,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import Adam
 
 EPISODES = 10000
-img_rows, img_cols = 80, 80
+img_rows, img_cols = 74, 160
 # Convert image into Black and white
 img_channels = 4  # We stack 4 frames
 
@@ -98,9 +98,10 @@ class DQNAgent:
 
     def process_image(self, obs):
         # Commented out image creation for testing
-        #cv2.imwrite('./images/'+str(uuid.uuid1())+".jpg", obs)
         obs = self.rgb2gray(obs)
-        obs = cv2.resize(obs, (img_rows, img_cols))
+        obs = obs[obs.shape[0]-img_rows:obs.shape[0]]
+        obs = cv2.resize(obs, (img_cols, img_rows))
+        #cv2.imwrite('./images/'+str(uuid.uuid1())+".jpg", obs)
         return obs
 
     def update_target_model(self):
@@ -211,13 +212,25 @@ def run_ddqn(args):
         "port": args.port,
         "body_style": "donkey",
         "body_rgb": (128, 128, 128),
-        "car_name": "me",
+        "car_name": "speed",
         "font_size": 100,
         "racer_name": "DDQN",
-        "country": "USA",
+        "country": "Estonia",
         "bio": "Learning to drive w DDQN RL",
         "guid": str(uuid.uuid4()),
         "max_cte": 10,
+        "lidar_config": {
+            "deg_per_sweep_inc": 2.0,
+            "deg_ang_down": 0.0,
+            "deg_ang_delta": -1.0,
+            "num_sweeps_levels": 1,
+            "max_range": 10.0,
+            "noise": 0.4,
+            "offset_x": 0.0,
+            "offset_y": 0.5,
+            "offset_z": 0.5,
+            "rot_x": 0.0,
+        },
     }
 
     # Construct gym environment. Starts the simulator if path is given.

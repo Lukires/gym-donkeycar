@@ -136,6 +136,7 @@ class DonkeyUnitySimHandler(IMesgHandler):
         self.vel_y = 0.0
         self.vel_z = 0.0
         self.lidar = []
+        self.max_lidar = conf["lidar_config"]["max_range"]
 
         # car in Unity lefthand coordinate system: roll is Z, pitch is X and yaw is Y
         self.roll = 0.0
@@ -362,6 +363,7 @@ class DonkeyUnitySimHandler(IMesgHandler):
         self.timer.reset()
         time.sleep(1)
         self.last_reset = time.time()
+        self.longest_duration = 0.0
         self.image_array = np.zeros(self.camera_img_size)
         self.image_array_b = None
         self.last_obs = self.image_array
@@ -386,6 +388,7 @@ class DonkeyUnitySimHandler(IMesgHandler):
         self.vel_y = 0.0
         self.vel_z = 0.0
         self.lidar = []
+        self.last_lidar = []
         self.current_lap_time = 0.0
         self.last_lap_time = 0.0
         self.lap_count = 0
@@ -447,21 +450,31 @@ class DonkeyUnitySimHandler(IMesgHandler):
     def calc_reward(self, done: bool) -> float:
         # Normalization factor, real max speed is around 30
         # but only attained on a long straight line
-        max_speed = 10
+        #max_speed = 10
 
         if done:
-            return -1.0
-
-        if self.cte > self.max_cte:
             return -1.0
 
         # Collision
         if self.hit != "none":
             return -2.0
 
-        # going fast close to the center of lane yields best reward
-        return (1.0 - (self.cte / self.max_cte) ** 2) * (self.speed / max_speed)
+        #print("CTE ", ((1.0 - (self.cte / self.max_cte) ** 2) * (self.speed / max_speed)))
 
+        # going fast close to the center of lane yields best reward
+        #return ((1.0 - (self.cte / self.max_cte) ** 2) * (self.speed / max_speed))
+        
+        lidar = self.lidar[self.lidar >= 0]
+        #if self.last_lidar == []:
+        #   self.last_lidar = lidar
+        #   return np.min((np.power(lidar, 2)))
+        
+        #reward = np.min((np.power(lidar, 2))) - np.min((np.power(self.last_lidar, 2)))
+        #self.last_lidar = lidar
+        return np.power(np.min(lidar) / self.max_lidar, 2)
+        
+        #return np.min((np.power(lidar, 2)))
+        #return np.min((np.power(lidar[lidar >= 0] / np.mean(lidar), 2)))
     # ------ Socket interface ----------- #
 
     def on_telemetry(self, message: Dict[str, Any]) -> None:

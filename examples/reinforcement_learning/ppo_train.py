@@ -90,10 +90,10 @@ if __name__ == "__main__":
         # create cnn policy
         model = PPO("CnnPolicy", env, verbose=1)
         # set up model in learning mode with goal number of timesteps to complete
-        model.learn(total_timesteps=10000)
+        model.learn(total_timesteps=100000)
         obs = env.reset()
 
-        for i in range(1000):
+        for i in range(100000):
             action, _states = model.predict(obs, deterministic=True)
 
             obs, reward, done, info = env.step(action)
